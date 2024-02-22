@@ -3,6 +3,8 @@ import { cn } from "../../utils/cn";
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
+
+
 export const ImagesSlider = ({
   images,
   children,
@@ -145,6 +147,7 @@ export const ImagesSlider = ({
             exit={direction === "up" ? "upExit" : "downExit"}
             variants={slideVariants}
             className="image h-full w-full absolute inset-0 object-cover object-center"
+            loading="lazy"
           />
         </AnimatePresence>
       )}
