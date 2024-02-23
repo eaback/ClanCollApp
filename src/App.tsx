@@ -1,5 +1,6 @@
 import './App.css'
 import { ImagesSliderDemo } from './components/ImagesSliderDemo'
+import LoginPage from './pages/LoginPage'
 
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
 
   return (
     <>
-      <ImagesSliderDemo/>
+      {/* <ImagesSliderDemo/> */}
+      <LoginPage />
     </>
   )
 }

@@ -21,6 +21,10 @@ export function ImagesSliderDemo() {
   ];
   
   return (
+    //todo: make this work on mobile
+    //todo: adjust colors
+    //todo: adjust font
+
     <ImagesSlider className="h-[100vh]" images={images}>
       <motion.div
         initial={{
