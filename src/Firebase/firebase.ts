@@ -4,15 +4,15 @@ import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID" // Optional for Firebase JS SDK v7.20.0 and later
-  };
+export const firebaseConfig = {
+  apiKey: "AIzaSyBQ3682fwnRnwr20igIPKaRr3uTUfKf_ic",
+  authDomain: "clancollapp.firebaseapp.com",
+  projectId: "clancollapp",
+  storageBucket: "clancollapp.appspot.com",
+  messagingSenderId: "1075914723120",
+  appId: "1:1075914723120:web:e2fcd88ed691a4507282f5",
+  measurementId: "G-ZGEQ8LZ3EL"
+};
   
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);

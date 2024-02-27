@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import organised from '../assets/organised.jpg';
 import Google  from '../assets/Google-icon.svg.png'
 import '../index.css';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const auth = getAuth();
+    const navigate = useNavigate();
+    const [authing, setAuthing] = useState(false);
 //configure and include Firebase auth
 
-//login function
+//login function Google
+const signInWithGoogle = async () => {
+    setAuthing(true);
 
-//signup function
+    signInWithPopup(auth, new GoogleAuthProvider())
+    .then((response) => {
+        console.log(response.user.uid);
+        navigate('/git-ClanCollApp/');
+    });
+};
+
+//signup function email
 
 //make sure everything gets validated
 
@@ -17,6 +31,7 @@ const Login = () => {
 // remember user for 30 days
 
 // use different auth providers ( google, email, apple, ...)
+
 
 
     return (//write code to hide the background picture when on mobile devices
@@ -87,10 +102,12 @@ const Login = () => {
                             or
                         </p>
                     </div>
-                    <div className='w-full text-tertiary my-2 font-semibold bg-primary border-[2px] border-tertiary/80 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+                    <button 
+                    className='w-full text-tertiary my-2 font-semibold bg-primary border-[2px] border-tertiary/80 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
+                    onClick={() => signInWithGoogle()} disabled={authing}>
                         <img src={Google} className='h-3 mr-2' />
                         Sign In With Google
-                    </div>
+                    </button>
 
                 </div>
 
