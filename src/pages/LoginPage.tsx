@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import organised from '../assets/organised.jpg';
 import Google  from '../assets/Google-icon.svg.png'
 import '../index.css';

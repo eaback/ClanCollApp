@@ -1,5 +1,5 @@
 import './App.css';
-import { ImagesSliderDemo } from './components/ImagesSliderDemo';
+// import { ImagesSliderDemo } from './components/ImagesSliderDemo';
 import LoginPage from './pages/LoginPage';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Home from './pages/Home'

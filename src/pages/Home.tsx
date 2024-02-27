@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ImagesSliderDemo } from '../components/ImagesSliderDemo';
 import { getAuth, signOut } from 'firebase/auth';
 

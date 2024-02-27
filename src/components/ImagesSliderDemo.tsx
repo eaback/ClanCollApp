@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import React from "react";
 import { ImagesSlider } from "./ui/images-slider";
 import family from  '../assets/family.jpg';
 import globe from  '../assets/globe.jpg';
