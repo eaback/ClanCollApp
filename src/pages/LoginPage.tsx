@@ -23,6 +23,12 @@ const signInWithGoogle = async () => {
 };
 
 //signup function email
+const signUpWithEmail = async () => {
+
+    // return (
+
+    // )
+}
 
 //make sure everything gets validated
 
