@@ -1,46 +1,49 @@
-import { useState } from 'react';
-import organised from '../assets/organised.jpg';
-import Google  from '../assets/Google-icon.svg.png'
 import '../index.css';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import organised from '../assets/organised.jpg';
+import Google from '../assets/Google-icon.svg.png'
+import React, { useState } from 'react';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword} from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+export interface ILoginPageProps {}
+
+const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
     const auth = getAuth();
     const navigate = useNavigate();
     const [authing, setAuthing] = useState(false);
-//configure and include Firebase auth
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-//login function Google
-const signInWithGoogle = async () => {
-    setAuthing(true);
+    const signInWithGoogle = async () => {
+        setAuthing(true);
 
-    signInWithPopup(auth, new GoogleAuthProvider())
-    .then((response) => {
-        console.log(response.user.uid);
-        navigate('/git-ClanCollApp/');
-    });
-};
+        signInWithPopup(auth, new GoogleAuthProvider())
+            .then((response) => {
+                console.log(response.user.uid);
+                navigate('/git-ClanCollApp/');
+            })
+            .catch((error) => {
+                console.log(error);
+                setAuthing(false);
+            });
+    };
 
-//signup function email
-const signUpWithEmail = async () => {
+    const signIn = async () => {
+        setAuthing(true);
+        setError('');
 
-    // return (
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate('/git-ClanCollApp/');
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setAuthing(false);
+        }
+    };
 
-    // )
-}
-
-//make sure everything gets validated
-
-//function to change password
-
-// remember user for 30 days
-
-// use different auth providers ( google, email, apple, ...)
-
-
-
-    return (//write code to hide the background picture when on mobile devices
+    return (
         <div className='w-full h-screen flex items-start'>
             <div className='hidden md:flex relative w-1/2 h-full flex flex-col'>
                 <div className='absolute rounded-lg top-[12%] left-[10%] flex flex-col bg-primary bg-opacity-30'>
@@ -69,18 +72,25 @@ const signUpWithEmail = async () => {
                         </p>
                     </div>
 
+                    
                     <div className='w-full flex flex-col'>
                         <input 
                             type='email'
                             placeholder='Email'
-                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'/>
-
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                            />
+                        
                         <input 
                             type='password'
                             placeholder='Password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'/>
+                        {error && <p className='text-red-500'>{error}</p>}
                     </div>
-                    
+
                     <div className='w-full flex items-center justify-between'>
                         <div className='w-full flex items-center'>
                             <input type='checkbox' className='w-4 h-4 mr-2'/>
@@ -93,11 +103,15 @@ const signUpWithEmail = async () => {
                     </div>
 
                     <div className='w-full flex flex-col my-4'>
-                        <button className='w-full text-primary my-1 font-semibold bg-secondary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+                        <button  
+                        onClick={signIn}
+                        disabled={authing}
+                        className='w-full text-primary my-1 font-semibold bg-secondary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
+                        >
                             Log in
                         </button>
                         <button className='w-full text-tertiary my-1 font-semibold bg-primary border-[2px] border-tertiary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
-                            Register
+                            Sign Up
                         </button>
                     </div>
 
@@ -110,7 +124,8 @@ const signUpWithEmail = async () => {
                     </div>
                     <button 
                     className='w-full text-tertiary my-2 font-semibold bg-primary border-[2px] border-tertiary/80 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
-                    onClick={() => signInWithGoogle()} disabled={authing}>
+                    onClick={() => signInWithGoogle()} disabled={authing}
+                    >
                         <img src={Google} className='h-3 mr-2' />
                         Sign In With Google
                     </button>
