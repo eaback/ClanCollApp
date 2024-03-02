@@ -1,15 +1,41 @@
-import React from "react";
+import React, { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import organised from '../assets/organised.jpg';
-import Google from '../assets/Google-icon.svg.png';
 
 const SignUpPage = () => {
+    const auth = getAuth();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [authing, setAuthing] = useState(false);
+    const [error, setError] = useState('');
+
+    const signUpWithEmailPassword = async () => {
+        setAuthing(true);
+        setError('');
+
+        if (password !== confirmPassword) {
+            setError("Passwords don't match");
+            setAuthing(false);
+            return;
+        }
+
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            navigate('/git-ClanCollApp/');
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setAuthing(false);
+        }
+    };
 
     return (
         <div className='w-full h-screen flex items-start'>
-            
-        
             <div className='w-full md:w-1/2 h-full bg-primary flex flex-col p-20 justify-between items-center'>
-                <h1 className=' w-full max-w-[500px] mx-auto text-xl text-tertiary font-semibold'>
+                <h1 className='w-full max-w-[500px] mx-auto text-xl text-tertiary font-semibold'>
                     ClanCollApp
                 </h1>
 
@@ -27,47 +53,47 @@ const SignUpPage = () => {
                         <input 
                             type='email'
                             placeholder='Email'
-
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
-                            />    
+                        />    
                         <input 
                             type='password'
                             placeholder='Password'
-                            
-                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'/>
-                       <input 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                        />
+                        <input 
                             type='password'
                             placeholder='Confirm password'
-                            
-                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'/>
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                        />
                     </div>
 
-                    <div className='w-full flex flex-col my-4'>
-                        <button  
-                        
+                    {error && <p className='text-red-500'>{error}</p>}
+
+                    <button  
+                        onClick={signUpWithEmailPassword}
                         className='w-full text-primary my-1 font-semibold bg-secondary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
-                        >
-                            Sign Up
-                        </button>
-                        <button  
-                        
+                        disabled={authing}
+                    >
+                        {authing ? 'Signing Up...' : 'Sign Up'}
+                    </button>
+                    <button  
+                        onClick={() => navigate('/git-ClanCollApp/login')}
                         className='w-full text-secondary my-1 font-semibold bg-primary border-[2px] border-secondary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
-                        >
-                            Or Log in here
-                        </button>
-                    </div>
-
-                    <div className='w-full flex items-center justify-center relative py-2'>
-                        
-                    </div>
-
+                    >
+                        Or Log in here
+                    </button>
                 </div>
 
                 <div className='w-full flex items-center justify-center'>
                     <p className='text-sm font-normal text-tertiary'>
-                        Already have an account? <span className='font-semibold underline underline-offset-2 cursor-pointer'>Log in here</span>
+                        Already have an account? <span onClick={() => navigate('/git-ClanCollApp/login')} className='font-semibold underline underline-offset-2 cursor-pointer'>Log in here</span>
                     </p>
-
                 </div>
             </div>
 

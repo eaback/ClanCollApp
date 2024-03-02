@@ -7,6 +7,7 @@ import {initializeApp} from 'firebase/app'
 import AuthRoute from './components/Auth/AuthRoute';
 import { firebaseConfig } from './Firebase/firebase';
 import SignUpPage from './pages/SignUpPage';
+import ProfilePage from './pages/ProfilePage';
 
 initializeApp(firebaseConfig);
 
@@ -14,7 +15,7 @@ const App = () => {
   
 
   return (
-    <SignUpPage/>
+    <ProfilePage/>
       // <Routes>
       //   {/* <Route path="/git-ClanCollApp"  */}
       //           {/* // element= { <Home/>} /> */}
