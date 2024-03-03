@@ -11,6 +11,13 @@ import {
   IconTableColumn,
 } from "@tabler/icons-react";
 
+
+//Todo: create clock in lower right
+//Todo: make hover react instead of click
+//Todo: when clicked move to app page for example Todo's
+//Todo: build Firebase
+//Todo: check authentication for page
+
 export function DashboardGrid() {
   return (
     <BentoGrid className="max-w-4xl mx-auto">
