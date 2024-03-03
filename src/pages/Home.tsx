@@ -1,6 +1,7 @@
 
 import { ImagesSliderDemo } from '../components/ImagesSliderDemo';
 import { getAuth, signOut } from 'firebase/auth';
+import Topnavbar from '../components/Navigation/Topnavibar'
 
 export interface IHomeProps{}
 
@@ -9,6 +10,7 @@ const Home: React.FunctionComponent<IHomeProps> = (props) => {
 
     return (
         <>
+            <Topnavbar/>
             <ImagesSliderDemo/>
             <button 
             className='absolute top-5 right-10 ml-auto text-primary bg-secondary bg-opacity-20 border-secondary p-1  rounded-lg'

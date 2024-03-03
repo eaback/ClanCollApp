@@ -17,7 +17,7 @@ const ProfilePage = () => {
                 <h1 className='text-4xl font-bold mb-10'>ClanCollApp</h1>
                 <div className="w-1/2 flex flex-row justify-between">
                     <h1 className='text-3xl font-semibold mt-5 mb-10'>Profile</h1>
-                    <switch className="text-3xl font-semibold mb-20"/>
+                    <div className="text-3xl font-semibold mb-20">Switch</div>
                 </div>
                 </div>
                
@@ -46,9 +46,10 @@ const ProfilePage = () => {
                 </form>
 
                 {/* Groups */}
-                {/* <div className='flex flex-row items-center'>
-                    <button className='text-lg font-semibold bg-primary border-2 border-tertiary rounded-md py-2 px-4 cursor-pointer'>Save Changes</button>
-                </div> */}
+             //Todo build a table here with shadcnui 
+             //todo define data of a group to be shown
+             //todo build firebase database 
+             //todo create a group with test members.
             </div>
         </div>
     );
