@@ -1,5 +1,7 @@
 import { cn } from "../utils/cn";
 import React from "react";
+import kilimanjaro from '../assets/kilimanjaro.jpg'
+
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import {
   IconArrowWaveRightUp,
@@ -20,7 +22,9 @@ import {
 
 export function DashboardGrid() {
   return (
-    <BentoGrid className="max-w-4xl mx-auto">
+    <div className='relative w-full h-screen flex items-start'>
+      <img src={kilimanjaro} className='absolute inset-0 w-full h-full object-cover opacity-55'  alt="background"/>
+    <BentoGrid className="max-w-4xl mx-auto bg-primary">
       {items.map((item, i) => (
         <BentoGridItem
           key={i}
@@ -32,6 +36,7 @@ export function DashboardGrid() {
         />
       ))}
     </BentoGrid>
+    </div>
   );
 }
 const Skeleton = () => (
