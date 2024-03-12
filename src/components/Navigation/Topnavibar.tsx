@@ -32,7 +32,7 @@ export default function App() {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
            {/* <AcmeLogo /> */}
-          <p className="font-bold text-inherit text-lg text-tertiary">ClanCollApp</p>
+           <p className="font-bold text-xxl text-inherit text-lg text-tertiary">ClanCollApp</p>
         </NavbarBrand>
         <NavbarItem>
           <Link className="text-tertiary font-bold" href="/git-ClanCollApp">

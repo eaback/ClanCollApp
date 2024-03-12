@@ -16,16 +16,27 @@ const App = () => {
   
 
   return (
-   <BrowserRouter>
+    <BrowserRouter>
       <Routes>
-        <Route path="/git-ClanCollApp"
-                element= { <Home/>} />
+
         <Route path="/git-ClanCollApp/login" element= {<LoginPage />} />
         <Route path="/git-ClanCollApp/signup" element= {<SignUpPage />} />
-        <Route path="/git-ClanCollApp/Profile" element= {<ProfilePage/>} />
-        <Route path="/git-ClanCollApp/Dashboard" element= {<Dashboard/>} />
+        {/* <AuthRoute> */}
+            <Route path="/git-ClanCollApp"
+                element= { <AuthRoute>
+                              <Home/>
+                          </AuthRoute>} />
+            <Route path="/git-ClanCollApp/Profile" 
+                element= {<AuthRoute>
+                            <ProfilePage/>
+                          </AuthRoute>} />
+            <Route path="/git-ClanCollApp/Dashboard" 
+                element= {<AuthRoute>
+                            <Dashboard/>
+                          </AuthRoute>} />
+        {/* </AuthRoute> */}
       </Routes>
-      </BrowserRouter>
+    </BrowserRouter>
   )
 }
 

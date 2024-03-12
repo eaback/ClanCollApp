@@ -1,6 +1,7 @@
 import { cn } from "../utils/cn";
 import React from "react";
 import kilimanjaro from '../assets/kilimanjaro.jpg'
+import bjork from '../assets/bjork.jpg'
 
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import {
@@ -12,6 +13,8 @@ import {
   IconSignature,
   IconTableColumn,
 } from "@tabler/icons-react";
+import { ImagesSliderDemo } from "./ImagesSliderDemo";
+import { Suspense } from "react";
 
 
 //Todo: create clock in lower right
@@ -22,8 +25,7 @@ import {
 
 export function DashboardGrid() {
   return (
-    <div className='relative w-full h-screen flex items-start'>
-      <img src={kilimanjaro} className='absolute inset-0 w-full h-full object-cover opacity-55'  alt="background"/>
+    <div className="bg-cover bg-center min-h-screen" style={{backgroundImage: `url(${bjork})`}}>
     <BentoGrid className="max-w-4xl mx-auto bg-primary">
       {items.map((item, i) => (
         <BentoGridItem
@@ -40,49 +42,49 @@ export function DashboardGrid() {
   );
 }
 const Skeleton = () => (
-  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
+  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100 opacity-100"></div>
 );
 const items = [
   {
-    title: "The Dawn of Innovation",
-    description: "Explore the birth of groundbreaking ideas and inventions.",
-    header: <Skeleton />,
+    title: "Clan To-Do's",
+    description: 
+    "Keep track of your Clans To-Do's, add, change or remove by clicking this screen.",
+    header: <ImagesSliderDemo />,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Digital Revolution",
-    description: "Dive into the transformative power of technology.",
+    title: "Notes",
+    description: "Dive into the Clans notes, add, discuss, or change notes. Keep track of your ideas",
     header: <Skeleton />,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Art of Design",
-    description: "Discover the beauty of thoughtful and functional design.",
+    title: "Groceries",
+    description: "Clan's Groceries List, a shared list where every member can manage items",
     header: <Skeleton />,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Power of Communication",
-    description:
-      "Understand the impact of effective communication in our lives.",
+    title: "The Clan Planner",
+    description:"The Clan planner is displayed here, keep track of everyone's schedule, meetings and appointments.",
     header: <Skeleton />,
     icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Pursuit of Knowledge",
-    description: "Join the quest for understanding and enlightenment.",
+    title: "Members",
+    description: "Manage Clan members here, add, remove or change who is part of your Clan",
     header: <Skeleton />,
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Joy of Creation",
-    description: "Experience the thrill of bringing ideas to life.",
+    title: "Calender",
+    description: "Yearly Calender",
     header: <Skeleton />,
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Spirit of Adventure",
-    description: "Embark on exciting journeys and thrilling discoveries.",
+    title: "Clan Clock",
+    description: "just you clock keeping track of time, so you don't have to :D.",
     header: <Skeleton />,
     icon: <IconBoxAlignRightFilled className="h-4 w-4 text-neutral-500" />,
   },
