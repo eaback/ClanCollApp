@@ -1,8 +1,10 @@
 import React, {useState} from "react";
+import { getAuth, signOut } from 'firebase/auth';
 import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const auth = getAuth();
 
   const menuItems = [
     { label: "Home", url: "/git-ClanCollApp" },
@@ -60,6 +62,12 @@ export default function App() {
             Sign Up
           </Button>
         </NavbarItem>
+        {/* <NavbarItem>
+          <Button 
+            className='absolute top-5 right-10 ml-auto text-primary bg-secondary bg-opacity-20 border-secondary p-1  rounded-lg'
+            onClick={() => signOut(auth)}>Sign Out
+          </Button>
+        </NavbarItem> */}
       </NavbarContent>
                                               {/* "solid" | "bordered" | "light" | "flat" | "faded" | "shadow" | "ghost" | undefined' */}
       <NavbarMenu className="bg-opacity">

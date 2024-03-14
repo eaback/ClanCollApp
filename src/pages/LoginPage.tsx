@@ -4,6 +4,9 @@ import Google from '../assets/Google-icon.svg.png'
 import React, { useState } from 'react';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword} from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../Firebase/firebase';
+import SignUpPage from './SignUpPage';
 
 export interface ILoginPageProps {}
 
@@ -17,11 +20,12 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
 
     const signInWithGoogle = async () => {
         setAuthing(true);
-
+        setError('');
+        
         signInWithPopup(auth, new GoogleAuthProvider())
             .then((response) => {
                 console.log(response.user.uid);
-                navigate('/git-ClanCollApp/');
+                navigate('/git-ClanCollApp/Profile');
             })
             .catch((error) => {
                 console.log(error);
@@ -35,13 +39,31 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            console.log(auth.currentUser)
+
+            const user = auth.currentUser;
+            if (user) {
+                const userProfileRef = doc(db, 'users', user.uid);
+                const docSnap = await getDoc(userProfileRef);
+                if (docSnap.exists()) {
+                    // Populate user profile from Firestore data
+                    const userProfileData = docSnap.data();
+                    // Set user profile in state or context for use in the application
+                }
+            }
+
             navigate('/git-ClanCollApp/');
         } catch (error) {
             console.log(error);
+            setError('Failed to sign in. Please check your email and password.');
         } finally {
             setAuthing(false);
         }
     };
+
+    const signUp = () => {
+        navigate('/git-ClanCollApp/signup')
+    }
 
     return (
         <div className='w-full h-screen flex items-start'>
@@ -110,7 +132,10 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
                         >
                             Log in
                         </button>
-                        <button className='w-full text-tertiary my-1 font-semibold bg-primary border-[2px] border-tertiary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+                        <button 
+                        className='w-full text-tertiary my-1 font-semibold bg-primary border-[2px] border-tertiary rounded-md p-4 text-center flex items-center justify-center cursor-pointer'
+                        onClick={signUp}
+                        >
                             Sign Up
                         </button>
                     </div>

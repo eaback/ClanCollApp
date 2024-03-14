@@ -3,12 +3,14 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Home from './pages/Home'
-import {initializeApp} from 'firebase/app'
 import AuthRoute from './components/Auth/AuthRoute';
-import { firebaseConfig } from './Firebase/firebase';
 import SignUpPage from './pages/SignUpPage';
 import ProfilePage from './pages/ProfilePage';
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/Dashboard';
+
+import { firebaseConfig } from './Firebase/firebase';
+import { initializeApp } from 'firebase/app';
+
 
 initializeApp(firebaseConfig);
 

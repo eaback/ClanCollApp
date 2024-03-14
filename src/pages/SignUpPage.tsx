@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import organised from '../assets/organised.jpg';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import {db} from '../Firebase/firebase';
+
 
 const SignUpPage = () => {
     const auth = getAuth();
@@ -9,22 +12,42 @@ const SignUpPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNr, setPhoneNr] = useState('');
     const [authing, setAuthing] = useState(false);
     const [error, setError] = useState('');
 
     const signUpWithEmailPassword = async () => {
         setAuthing(true);
         setError('');
-
+    
         if (password !== confirmPassword) {
             setError("Passwords don't match");
             setAuthing(false);
             return;
         }
-
+    
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            navigate('/git-ClanCollApp/');
+            // Attempt to create user in Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            
+            // If user creation succeeds, proceed to create user profile in Firestore
+            const user = userCredential.user;
+            if (user) {
+                const userProfileRef = doc(collection(db, 'Users'), user.uid);
+                const userData = {
+                    uid: user.uid,
+                    email: user.email || '',
+                    firstName,
+                    lastName, 
+                    phone: phoneNr,
+                };
+                await setDoc(userProfileRef, userData);
+            }
+    
+            // Navigate to the desired location after successful sign-up
+            navigate('/git-ClanCollApp/Profil');
         } catch (error) {
             console.log(error);
         } finally {
@@ -50,6 +73,27 @@ const SignUpPage = () => {
                     </div>
 
                     <div className='w-full flex flex-col'>
+                        <input 
+                            type='text'
+                            placeholder='First Name'
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                        />    
+                        <input 
+                            type='text'
+                            placeholder='Last Name'
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                        />    
+                        <input 
+                            type='text'
+                            placeholder='Phone Number'
+                            value={phoneNr}
+                            onChange={(e) => setPhoneNr(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                        />    
                         <input 
                             type='email'
                             placeholder='Email'

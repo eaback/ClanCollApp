@@ -11,9 +11,9 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <NextUIProvider>
-      {/* <BrowserRouter> */}
+      
         <App/>
-      {/* </BrowserRouter> */}
+
     </NextUIProvider>
   </React.StrictMode>,
 )
