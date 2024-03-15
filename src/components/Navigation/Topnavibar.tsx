@@ -55,19 +55,19 @@ export default function App() {
 
       <NavbarContent justify="end">
         <NavbarItem className=" lg:flex">
-          <Link className="text-tertiary font-bold" href="/git-ClanCollApp/login">Login</Link>
+          <Link className="text-tertiary font-bold border-secondary border-[2px] p-1 pl-3 pr-3 rounded-lg" href="/git-ClanCollApp/login">Login</Link>
         </NavbarItem>
         <NavbarItem>
           <Button as={Link} className="bg-secondary text-primary border-secondary bg-opacity-80" href="/git-ClanCollApp/signup" variant="ghost">
             Sign Up
           </Button>
         </NavbarItem>
-        {/* <NavbarItem>
+        <NavbarItem>
           <Button 
-            className='absolute top-5 right-10 ml-auto text-primary bg-secondary bg-opacity-20 border-secondary p-1  rounded-lg'
-            onClick={() => signOut(auth)}>Sign Out
+            className='ml-2 text-secondary bg-primary bg-opacity-80 border-secondary border-[2px] p-1  rounded-lg'
+            onClick={() => signOut(auth)}> Sign Out
           </Button>
-        </NavbarItem> */}
+        </NavbarItem>
       </NavbarContent>
                                               {/* "solid" | "bordered" | "light" | "flat" | "faded" | "shadow" | "ghost" | undefined' */}
       <NavbarMenu className="bg-opacity">

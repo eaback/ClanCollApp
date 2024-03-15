@@ -4,7 +4,7 @@ import Google from '../assets/Google-icon.svg.png'
 import React, { useState } from 'react';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword} from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../Firebase/firebase';
 import SignUpPage from './SignUpPage';
 
@@ -22,15 +22,40 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
         setAuthing(true);
         setError('');
         
-        signInWithPopup(auth, new GoogleAuthProvider())
-            .then((response) => {
-                console.log(response.user.uid);
-                navigate('/git-ClanCollApp/Profile');
-            })
-            .catch((error) => {
-                console.log(error);
-                setAuthing(false);
-            });
+        try {
+            const response = await signInWithPopup(auth, new GoogleAuthProvider());
+            const user = response.user;
+            
+            // Check if the user is new (just signed up)
+            if (user && user.metadata.creationTime === user.metadata.lastSignInTime) {
+                // Create user profile in Firestore
+                const userProfileRef = doc(db, 'Users', user.uid);
+                const userData = {
+                    uid: user.uid,
+                    email: user.email || '',
+                    firstName: '', // Add default values or prompt the user to fill them in later
+                    lastName: '',
+                    phone: '',
+                };
+                await setDoc(userProfileRef, userData);
+            }
+    
+            navigate('/git-ClanCollApp/Profile');
+        } catch (error) {
+            console.log(error);
+            setError('Failed to sign in with Google.');
+            setAuthing(false);
+        }
+
+        // signInWithPopup(auth, new GoogleAuthProvider())
+        //     .then((response) => {
+        //         console.log(response.user.uid);
+        //         navigate('/git-ClanCollApp/Profile');
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //         setAuthing(false);
+        //     });
     };
 
     const signIn = async () => {
