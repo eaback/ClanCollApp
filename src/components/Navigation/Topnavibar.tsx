@@ -10,7 +10,8 @@ export default function App() {
     { label: "Home", url: "/git-ClanCollApp" },
     { label: "Profile", url: "/git-ClanCollApp/Profile" },
     { label: "Dashboard", url: "/git-ClanCollApp/Dashboard" },
-    { label: "Log Out", url: "/git-ClanCollApp/login" },
+    // { label: "Log In", url: "/git-ClanCollApp/login" },
+    // { label: "Sign Up", url: "/git-ClanCollApp/signup" },
   ];
 
   return (
@@ -26,14 +27,13 @@ export default function App() {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-           {/* <AcmeLogo /> */}
-          <p className="font-bold text-inherit">ClanCollApp</p>
+           
+          <h1 className="text-xxl font-bold text-inherit">ClanCollApp</h1>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-           {/* <AcmeLogo /> */}
            <p className="font-bold text-xxl text-inherit text-lg text-tertiary">ClanCollApp</p>
         </NavbarBrand>
         <NavbarItem>
@@ -51,17 +51,20 @@ export default function App() {
             Dashboard
           </Link>
         </NavbarItem>
+        <NavbarItem className=" lg:flex">
+          {/* <Link className="text-tertiary font-bold  rounded-lg bg-primary" href="/git-ClanCollApp/login">
+            Login
+          </Link> */}
+        </NavbarItem>
+        <NavbarItem>
+          {/* <Link className="border-primary font-bold text-tertiary rounded-lg" href="/git-ClanCollApp/signup">
+            Sign Up
+          </Link> */}
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className=" lg:flex">
-          <Link className="text-tertiary font-bold border-secondary border-[2px] p-1 pl-3 pr-3 rounded-lg" href="/git-ClanCollApp/login">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} className="bg-secondary text-primary border-secondary bg-opacity-80" href="/git-ClanCollApp/signup" variant="ghost">
-            Sign Up
-          </Button>
-        </NavbarItem>
+     
         <NavbarItem>
           <Button 
             className='ml-2 text-secondary bg-primary bg-opacity-80 border-secondary border-[2px] p-1  rounded-lg'

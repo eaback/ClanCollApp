@@ -3,6 +3,8 @@ import Topnavbar from '../components/Navigation/Topnavibar'
 import autumnwoman from '../assets/autumnwoman.jpg';
 import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
 import {db, auth} from '../Firebase/firebase'
+import {Card, CardHeader, CardBody, Image, Button} from "@nextui-org/react";
+import projectgroup from "../assets/projectgroup.jpg";
 
 const ProfilePage = () => {
     const [firstName, setFirstName] = useState("");
@@ -58,11 +60,11 @@ const ProfilePage = () => {
         <div className='relative w-full h-screen flex items-start'>
             <img src={autumnwoman} className='absolute inset-0 w-full h-full object-cover opacity-70' alt="background" />
 
-            <div className='relative z-10 flex flex-col w-[75vw] h-full p-8 text-tertiary justify-start'>
-                <h1 className='text-4xl font-bold mb-10'>ClanCollApp</h1>
-                <h1 className='text-3xl font-semibold mt-5 mb-10'>Profile</h1>
+            <div className='relative z-10 flex flex-col w-[75vw] xs:w-full h-full p-4 text-tertiary justify-around'>
+                <h1 className='text-4xl xs:text-2xl font-bold'>ClanCollApp</h1>
+                <h1 className='text-3xl xs:text-xl font-semibold'>Profile</h1>
 
-                <form onSubmit={handleSubmit} className='w-1/2 flex flex-col mb-4'>
+                <form onSubmit={handleSubmit} className='w-1/2 m:w-[75vw] flex flex-col mb-4'>
                     <div className='flex flex-col mb-2'>
                         <label htmlFor='firstName' className='text-lg mb-1'>First Name</label>
                         <input type='text' id='firstName' value={firstName} onChange={(e) => setFirstName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
@@ -82,10 +84,45 @@ const ProfilePage = () => {
                     <button type='submit' className='text-lg font-semibold border-2 border-tertiary bg-primary rounded-md py-1 text-center cursor-pointer'>Save changes</button>
                 </form>
 
-                {/* Groups */}
-                //Todo: Build a table here with shadow-ui
-                //Todo: Define data of a group to be shown
-                //Todo: Create a group with test members
+                <Card
+                isBlurred
+                className="border-none bg-background/60 dark:bg-default-100/50 max-w-[610px]"
+                shadow="sm"
+                >
+                    <CardBody>
+                        <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
+                            <div className="relative col-span-6 md:col-span-4">
+                            <Image
+                            alt="Album cover"
+                            className="object-cover"
+                            height={200}
+                            shadow="md"
+                            src={projectgroup}
+                            width="100%"
+                            />
+                            </div>
+
+                            <div className="flex flex-col col-span-6 md:col-span-8">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex flex-col gap-0 border-1 m-2 p-2">
+                                        <h1 className="text-medium font-medium m-2 border-2 p-2">Your Clans</h1>
+                                        <ul className="text-small m-2 p-2">
+                                            List of Clans
+                                        </ul>
+                                    </div>
+                                    <div  className="flex flex-col gap-0 border-tertiary m-2 border-1 p-2">
+                                        <h1 className="text-medium font-medium m-2 border-2 p-2">
+                                            Add New Clan
+                                        </h1>
+                                        <Button className="text-small m-2 p-2">
+                                            Create Clan
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
             </div>
         </div>
         </>
