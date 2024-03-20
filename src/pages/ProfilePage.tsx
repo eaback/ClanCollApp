@@ -1,38 +1,52 @@
-import React, {useState, useEffect}from "react";
+import React, { useState, useEffect } from "react";
 import Topnavbar from '../components/Navigation/Topnavibar'
 import autumnwoman from '../assets/autumnwoman.jpg';
-import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
-import {db, auth} from '../Firebase/firebase'
-import {Card, CardHeader, CardBody, Image, Button} from "@nextui-org/react";
+import { addDoc, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, updateDoc,collection } from "firebase/firestore";
+import { db, auth } from '../Firebase/firebase'
+import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import projectgroup from "../assets/projectgroup.jpg";
+import { useNavigate } from "react-router-dom";
+import CreateClanPrompt from '../components/ui/Prompt'
 
 const ProfilePage = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const navigate = useNavigate();
+    const [showPrompt, setShowPrompt] = useState(false);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             const user = auth.currentUser;
-            if(user) {
+            if (user) {
                 const docRef = doc(db, "Users", user.uid);
                 const docSnap = await getDoc(docRef);
-            
-            if (docSnap.exists()) {
-                const userProfileData = docSnap.data();
-                setFirstName(userProfileData.firstName || '');
-                setLastName(userProfileData.lastName || '');
-                setPhone(userProfileData.phone || '');
-                setEmail(userProfileData.email || '');
-            } else {
-                console.log("No such document!");
-            }
-        }
-    };
 
-    fetchUserProfile();
-}, []);
+                if (docSnap.exists()) {
+                    const userProfileData = docSnap.data();
+                    setFirstName(userProfileData.firstName || '');
+                    setLastName(userProfileData.lastName || '');
+                    setPhone(userProfileData.phone || '');
+                    setEmail(userProfileData.email || '');
+                } else {
+                    console.log("User profile data not found!");
+                }
+            }
+        };
+
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                fetchUserProfile();
+            } else {
+                // Redirect to login or handle non-authenticated state
+                navigate('/login');
+            }
+        });
+
+        return () => unsubscribe();
+    }, [navigate]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,81 +64,90 @@ const ProfilePage = () => {
             phone,
             email,
         });
+    };
 
-       
+    const handleCreateClan = () => {
+        setShowPrompt(true);
+    };
+
+    const handleClosePrompt = () => {
+        setShowPrompt(false);
     };
 
     return (
         <>
-        <Topnavbar/>
-        <div className='relative w-full h-screen flex items-start'>
-            <img src={autumnwoman} className='absolute inset-0 w-full h-full object-cover opacity-70' alt="background" />
+            <Topnavbar />
+            <div className='relative w-full h-screen flex items-start'>
+                {showPrompt && <div className="fixed inset-0 bg-gray-900 opacity-50 z-50"></div>}
 
-            <div className='relative z-10 flex flex-col w-[75vw] xs:w-full h-full p-4 text-tertiary justify-around'>
-                <h1 className='text-4xl xs:text-2xl font-bold'>ClanCollApp</h1>
-                <h1 className='text-3xl xs:text-xl font-semibold'>Profile</h1>
+                <img src={autumnwoman} className='absolute inset-0 w-full h-full object-cover opacity-70' alt="background" />
 
-                <form onSubmit={handleSubmit} className='w-1/2 m:w-[75vw] flex flex-col mb-4'>
-                    <div className='flex flex-col mb-2'>
-                        <label htmlFor='firstName' className='text-lg mb-1'>First Name</label>
-                        <input type='text' id='firstName' value={firstName} onChange={(e) => setFirstName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
-                    </div>
-                    <div className='flex flex-col mb-2'>
-                        <label htmlFor='lastName' className='text-lg mb-1'>Last Name</label>
-                        <input type='text' id='lastName' value={lastName} onChange={(e) => setLastName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
-                    </div>
-                    <div className='flex flex-col mb-2'>
-                        <label htmlFor='phone' className='text-lg mb-1'>Phone</label>
-                        <input type='phone' id='phone' value={phone} onChange={(e) => setPhone(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
-                    </div>
-                    <div className='flex flex-col mb-2'>
-                        <label htmlFor='email' className='text-lg mb-1'>Email</label>
-                        <input type='email' id='email' value={email} onChange={(e) => setEmail(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
-                    </div>
-                    <button type='submit' className='text-lg font-semibold border-2 border-tertiary bg-primary rounded-md py-1 text-center cursor-pointer'>Save changes</button>
-                </form>
+                <div className='relative z-10 flex flex-col w-[75vw] xs:w-full h-full p-4 text-tertiary justify-around'>
+                    <h1 className='text-4xl xs:text-2xl font-bold'>ClanCollApp</h1>
+                    <h1 className='text-3xl xs:text-xl font-semibold'>Profile</h1>
 
-                <Card
-                isBlurred
-                className="border-none bg-background/60 dark:bg-default-100/50 max-w-[610px]"
-                shadow="sm"
-                >
-                    <CardBody>
-                        <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
-                            <div className="relative col-span-6 md:col-span-4">
-                            <Image
-                            alt="Album cover"
-                            className="object-cover"
-                            height={200}
-                            shadow="md"
-                            src={projectgroup}
-                            width="100%"
-                            />
-                            </div>
+                    <form onSubmit={handleSubmit} className='w-1/2 m:w-[75vw] flex flex-col mb-4'>
+                        <div className='flex flex-col mb-2'>
+                            <label htmlFor='firstName' className='text-lg mb-1'>First Name</label>
+                            <input type='text' id='firstName' value={firstName} onChange={(e) => setFirstName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
+                        </div>
+                        <div className='flex flex-col mb-2'>
+                            <label htmlFor='lastName' className='text-lg mb-1'>Last Name</label>
+                            <input type='text' id='lastName' value={lastName} onChange={(e) => setLastName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
+                        </div>
+                        <div className='flex flex-col mb-2'>
+                            <label htmlFor='phone' className='text-lg mb-1'>Phone</label>
+                            <input type='phone' id='phone' value={phone} onChange={(e) => setPhone(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
+                        </div>
+                        <div className='flex flex-col mb-2'>
+                            <label htmlFor='email' className='text-lg mb-1'>Email</label>
+                            <input type='email' id='email' value={email} onChange={(e) => setEmail(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
+                        </div>
+                        <button type='submit' className='text-lg font-semibold border-2 border-tertiary bg-primary rounded-md py-1 text-center cursor-pointer'>Save changes</button>
+                    </form>
 
-                            <div className="flex flex-col col-span-6 md:col-span-8">
-                                <div className="flex justify-between items-start">
-                                    <div className="flex flex-col gap-0 border-1 m-2 p-2">
-                                        <h1 className="text-medium font-medium m-2 border-2 p-2">Your Clans</h1>
-                                        <ul className="text-small m-2 p-2">
-                                            List of Clans
-                                        </ul>
-                                    </div>
-                                    <div  className="flex flex-col gap-0 border-tertiary m-2 border-1 p-2">
-                                        <h1 className="text-medium font-medium m-2 border-2 p-2">
-                                            Add New Clan
-                                        </h1>
-                                        <Button className="text-small m-2 p-2">
-                                            Create Clan
-                                        </Button>
+                    <Card
+                        isBlurred
+                        className="border-none bg-background/60 dark:bg-default-100/50 max-w-[610px]"
+                        shadow="sm"
+                    >
+                        <CardBody>
+                            <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
+                                <div className="relative col-span-6 md:col-span-4">
+                                    <Image
+                                        alt="Album cover"
+                                        className="object-cover"
+                                        height={200}
+                                        shadow="md"
+                                        src={projectgroup}
+                                        width="100%"
+                                    />
+                                </div>
+
+                                <div className="flex flex-col col-span-6 md:col-span-8">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex flex-col gap-0 border-1 m-2 p-2">
+                                            <h1 className="text-medium font-medium m-2 border-2 p-2">Your Clans</h1>
+                                            <ul className="text-small m-2 p-2">
+                                                List of Clans
+                                                </ul>
+                                        </div>
+                                        <div className="flex flex-col gap-0 border-tertiary m-2 border-1 p-2">
+                                            <h1 className="text-medium font-medium m-2 border-2 p-2">
+                                                Add New Clan
+                                            </h1>
+                                            <Button onClick={handleCreateClan} className="text-small m-2 p-2">
+                                                Create Clan
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </CardBody>
-                </Card>
+                        </CardBody>
+                    </Card>
+                </div>
             </div>
-        </div>
+            {showPrompt && <CreateClanPrompt onClose={handleClosePrompt} />}
         </>
     );
 }
