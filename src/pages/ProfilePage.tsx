@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Topnavbar from '../components/Navigation/Topnavibar'
 import autumnwoman from '../assets/autumnwoman.jpg';
-import { addDoc, query, where, getDocs } from "firebase/firestore";
-import { doc, getDoc, updateDoc,collection } from "firebase/firestore";
+import { doc, getDoc, updateDoc,collection, addDoc, query, where, getDocs  } from "firebase/firestore";
 import { db, auth } from '../Firebase/firebase'
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import projectgroup from "../assets/projectgroup.jpg";
 import { useNavigate } from "react-router-dom";
 import CreateClanPrompt from '../components/ui/Prompt'
+import {Clan} from '../components/types'
+
+// interface Clan {
+    
+//     clanName: string;
+//     creator: string;
+//     members: { type: string; value: string }[];
+//     // Add other properties here if needed
+// }
 
 const ProfilePage = () => {
+    const [nickName, setNickName] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const [userClans, setUserClans] = useState<Clan[]>([]);
     const navigate = useNavigate();
     const [showPrompt, setShowPrompt] = useState(false);
 
@@ -26,6 +36,9 @@ const ProfilePage = () => {
 
                 if (docSnap.exists()) {
                     const userProfileData = docSnap.data();
+                    console.log("User profile data: " + userProfileData)
+                    setNickName(userProfileData.nickName || '');
+                    console.log("Retrieved Nickname:", nickName);
                     setFirstName(userProfileData.firstName || '');
                     setLastName(userProfileData.lastName || '');
                     setPhone(userProfileData.phone || '');
@@ -36,9 +49,20 @@ const ProfilePage = () => {
             }
         };
 
+        const fetchUserClans = async () => {
+            const user = auth.currentUser;
+            if (user) {
+              const querySnapshot = await getDocs(
+                query(collection(db, "Clans"), where("members", "array-contains", user.uid)));
+              const clansData: Clan[] = querySnapshot.docs.map((doc: { id: any; data: () => any; }) => ({ id: doc.id,...doc.data() }));
+              setUserClans(clansData);
+            }
+          };
+
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
                 fetchUserProfile();
+                fetchUserClans();
             } else {
                 // Redirect to login or handle non-authenticated state
                 navigate('/login');
@@ -70,6 +94,13 @@ const ProfilePage = () => {
         setShowPrompt(true);
     };
 
+    const handleViewClan = (clanId: string) => {
+        const clan = userClans.find(clan => clan.id === clanId);
+    if (clan) {
+        navigate(`/clan/${clan.name}`);
+    }
+      };
+
     const handleClosePrompt = () => {
         setShowPrompt(false);
     };
@@ -87,6 +118,10 @@ const ProfilePage = () => {
                     <h1 className='text-3xl xs:text-xl font-semibold'>Profile</h1>
 
                     <form onSubmit={handleSubmit} className='w-1/2 m:w-[75vw] flex flex-col mb-4'>
+                    <div className='flex flex-col mb-2'>
+                            <label htmlFor='nickName' className='text-lg mb-1'>Nick Name</label>
+                            <input type='text' id='nickName' value={nickName} onChange={(e) => setNickName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
+                        </div>
                         <div className='flex flex-col mb-2'>
                             <label htmlFor='firstName' className='text-lg mb-1'>First Name</label>
                             <input type='text' id='firstName' value={firstName} onChange={(e) => setFirstName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
@@ -129,8 +164,14 @@ const ProfilePage = () => {
                                         <div className="flex flex-col gap-0 border-1 m-2 p-2">
                                             <h1 className="text-medium font-medium m-2 border-2 p-2">Your Clans</h1>
                                             <ul className="text-small m-2 p-2">
-                                                List of Clans
-                                                </ul>
+                                                {userClans.map((clan, index) => (
+                                                    <li key={index}>
+                                                        <button onClick={() => handleViewClan(clan.name)} className="text-blue-500 hover:underline focus:outline-none">
+                                                            {clan.name}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
                                         </div>
                                         <div className="flex flex-col gap-0 border-tertiary m-2 border-1 p-2">
                                             <h1 className="text-medium font-medium m-2 border-2 p-2">

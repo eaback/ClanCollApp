@@ -33,6 +33,7 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
                 const userData = {
                     uid: user.uid,
                     email: user.email || '',
+                    nickName: '',
                     firstName: '', // Add default values or prompt the user to fill them in later
                     lastName: '',
                     phone: '',
@@ -47,15 +48,6 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
             setAuthing(false);
         }
 
-        // signInWithPopup(auth, new GoogleAuthProvider())
-        //     .then((response) => {
-        //         console.log(response.user.uid);
-        //         navigate('/git-ClanCollApp/Profile');
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //         setAuthing(false);
-        //     });
     };
 
     const signIn = async () => {

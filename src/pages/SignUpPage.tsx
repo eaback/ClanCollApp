@@ -12,6 +12,7 @@ const SignUpPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [nickName, setNickName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNr, setPhoneNr] = useState('');
@@ -39,6 +40,7 @@ const SignUpPage = () => {
                 const userData = {
                     uid: user.uid,
                     email: user.email || '',
+                    nickName,
                     firstName,
                     lastName, 
                     phone: phoneNr,
@@ -47,7 +49,7 @@ const SignUpPage = () => {
             }
     
             // Navigate to the desired location after successful sign-up
-            navigate('/git-ClanCollApp/Profil');
+            navigate('/git-ClanCollApp/Profile');
         } catch (error) {
             console.log(error);
         } finally {
@@ -73,6 +75,13 @@ const SignUpPage = () => {
                     </div>
 
                     <div className='w-full flex flex-col'>
+                    <input 
+                            type='text'
+                            placeholder='Nick Name'
+                            value={nickName}
+                            onChange={(e) => setNickName(e.target.value)}
+                            className='w-full text-tertiary py-2 my-1 bg-transparent border-b border-tertiary outline-none focus:outline-none'
+                        />    
                         <input 
                             type='text'
                             placeholder='First Name'

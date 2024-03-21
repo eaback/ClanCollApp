@@ -14,9 +14,15 @@ module.exports = {
         secondary: 'rgba(9, 35, 39)',    // Example secondary color (30%)
         tertiary: 'rgba(11, 83, 81)',     // Example tertiary color (10%)
       },
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'],
+      },
     },
   },
   darkMode: "class",
-  plugins: [nextui()]
+  plugins: [
+    require('@tailwindcss/typography'), 
+    nextui()
+  ]
 }
 

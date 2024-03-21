@@ -2,6 +2,8 @@ import { cn } from "../utils/cn";
 import React from "react";
 import kilimanjaro from '../assets/kilimanjaro.jpg'
 import bjork from '../assets/bjork.jpg'
+import  DigitalClock from '../components/ui/clock'
+import  Calendar from '../components/ui/calender'
 
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import {
@@ -20,9 +22,6 @@ import { useNavigate } from "react-router-dom";
 
 
 //Todo: create clock in lower right
-//Todo: make hover react instead of click
-//Todo: when clicked move to app page for example Todo's
-//Todo: build Firebase
 //Todo: check authentication for page
 
 export function DashboardGrid() {
@@ -34,6 +33,7 @@ export function DashboardGrid() {
 
   return (
     <div className="bg-cover bg-center min-h-screen" style={{backgroundImage: `url(${bjork})`}}>
+      <header className="text-4xl text-primary p-1 text-center bg-secondary">Clan</header>
     <BentoGrid className="max-w-4xl mx-auto bg-primary">
       {items.map((item, i) => (
         <BentoGridItem
@@ -42,7 +42,7 @@ export function DashboardGrid() {
           description={item.description}
           header={item.header}
           icon={item.icon}
-          className={i === 3 || i === 6 ? "md:col-span-2" : ""}
+          className={i === 3 || i === 6 ? "md:col-span-2" : ""} 
           onClick={() => handleClick(item.path)}
         />
       ))}
@@ -94,14 +94,14 @@ const items = [
   {
     title: "Calender",
     description: "Yearly Calender",
-    header: <Skeleton />,
+    header: <Calendar />,
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
     path: "/git-ClanCollApp/"
   },
   {
     title: "Clan Clock",
     description: "just you clock keeping track of time, so you don't have to :D.",
-    header: <Skeleton />,
+    header: <DigitalClock />,
     icon: <IconBoxAlignRightFilled className="h-4 w-4 text-neutral-500" />,
     path: "/git-ClanCollApp/"
   },
