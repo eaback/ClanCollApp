@@ -7,10 +7,12 @@ import AuthRoute from './components/Auth/AuthRoute';
 import SignUpPage from './pages/SignUpPage';
 import ProfilePage from './pages/ProfilePage';
 import Dashboard from './pages/Dashboard';
-import ClanMembers from './pages/ClanMembers'
+import ClanMembers from './pages/ClanMembers';
+import ToDoPage from './pages/ToDoPage';
 
 import { firebaseConfig } from './Firebase/firebase';
 import { initializeApp } from 'firebase/app';
+
 
 
 initializeApp(firebaseConfig);
@@ -40,6 +42,10 @@ const App = () => {
             <Route path="/git-ClanCollApp/ClanMembers" 
                 element= {<AuthRoute>
                             <ClanMembers/>
+                          </AuthRoute>} />
+            <Route path="/git-ClanCollApp/ToDoPage" 
+                element= {<AuthRoute>
+                            <ToDoPage/>
                           </AuthRoute>} />
         {/* </AuthRoute> */}
       </Routes>

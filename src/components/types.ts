@@ -10,16 +10,9 @@ export interface User {
   export interface Clan {
     id: string;
     name: string;
-    members: string[
-      // {
-      //   firstName: string,
-      //   lastName: string,
-      //   uid: string,
-
-      // }
-    ]; // Array of user UIDs
+    members: string[    ]; 
     admin: string; // User UID of the admin
-    // Other properties as needed
+    
   }
 
   export interface Member {

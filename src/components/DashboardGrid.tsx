@@ -4,6 +4,7 @@ import kilimanjaro from '../assets/kilimanjaro.jpg'
 import bjork from '../assets/bjork.jpg'
 import  DigitalClock from '../components/ui/clock'
 import  Calendar from '../components/ui/calender'
+import ToDoPage from "../pages/ToDoPage";
 
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import {
@@ -59,9 +60,9 @@ const items = [
     title: "Clan To-Do's",
     description: 
     "Keep track of your Clans To-Do's, add, change or remove by clicking this screen.",
-    header: <Skeleton />,
+    header: <ToDoPage />,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/"
+    path: "/git-ClanCollApp/ToDoPage"
   },
   {
     title: "Notes",
