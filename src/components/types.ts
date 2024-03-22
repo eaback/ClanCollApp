@@ -30,3 +30,23 @@ export interface ClockTime {
   seconds: number;
   
 }
+
+export interface Activity {
+  id: string;
+  title: string;
+  description: string;
+  startTime: Date; // Use appropriate Date type
+  endTime: Date; // Use appropriate Date type
+}
+
+export interface Reminder {
+  id: string;
+  title: string;
+  time: Date; // Use appropriate Date type
+}
+
+export interface ClockTime {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}

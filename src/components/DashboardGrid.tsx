@@ -5,6 +5,12 @@ import bjork from '../assets/bjork.jpg'
 import  DigitalClock from '../components/ui/clock'
 import  Calendar from '../components/ui/calender'
 import ToDoPage from "../pages/ToDoPage";
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
+import todos from '../assets/todos.jpg'
+import journal from '../assets/journal.jpg'
+import groceries from '../assets/groceries.jpg'
+import ClanMembers from "../pages/ClanMembers";
+import { useNavigate } from "react-router-dom";
 
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import {
@@ -16,13 +22,7 @@ import {
   IconSignature,
   IconTableColumn,
 } from "@tabler/icons-react";
-import { ImagesSliderDemo } from "./ImagesSliderDemo";
-// import { Suspense } from "react";
-import ClanMembers from "../pages/ClanMembers";
-import { useNavigate } from "react-router-dom";
 
-
-//Todo: create clock in lower right
 //Todo: check authentication for page
 
 export function DashboardGrid() {
@@ -60,23 +60,23 @@ const items = [
     title: "Clan To-Do's",
     description: 
     "Keep track of your Clans To-Do's, add, change or remove by clicking this screen.",
-    header: <ToDoPage />,
+    header: <img src={todos} alt="To-Do" className="flex flex-1 w-[75] h-full min-h-[6rem] rounded-lg border-primary border-2"/>,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
     path: "/git-ClanCollApp/ToDoPage"
   },
   {
     title: "Notes",
     description: "Dive into the Clans notes, add, discuss, or change notes. Keep track of your ideas",
-    header: <Skeleton />,
+    header: <img src={journal} alt="Journal" className="flex flex-1 w-[75] h-full min-h-[6rem] rounded-lg border-primary border-2"/>,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/"
+    path: "/git-ClanCollApp/JournalPage"
   },
   {
     title: "Groceries",
     description: "Clan's Groceries List, a shared list where every member can manage items",
-    header: <Skeleton />,
+    header: <img src={groceries} alt="To-Do" className="flex flex-1 w-[75] h-full min-h-[6rem] rounded-lg border-primary border-2"/>,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/"
+    path: "/git-ClanCollApp/ShoppinglistPage"
   },
   {
     title: "The Clan Planner",
@@ -104,7 +104,7 @@ const items = [
     description: "just you clock keeping track of time, so you don't have to :D.",
     header: <DigitalClock />,
     icon: <IconBoxAlignRightFilled className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/"
+    path: "/git-ClanCollApp/CLockPage"
   },
 ];
 

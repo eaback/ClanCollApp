@@ -9,13 +9,8 @@ import { useNavigate } from "react-router-dom";
 import CreateClanPrompt from '../components/ui/Prompt'
 import {Clan} from '../components/types'
 
-// interface Clan {
-    
-//     clanName: string;
-//     creator: string;
-//     members: { type: string; value: string }[];
-//     // Add other properties here if needed
-// }
+
+
 
 const ProfilePage = () => {
     const [nickName, setNickName] = useState("");

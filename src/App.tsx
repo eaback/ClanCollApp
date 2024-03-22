@@ -9,9 +9,12 @@ import ProfilePage from './pages/ProfilePage';
 import Dashboard from './pages/Dashboard';
 import ClanMembers from './pages/ClanMembers';
 import ToDoPage from './pages/ToDoPage';
+import JournalPage from './pages/JournalPage';
+import ClockPage  from './pages/ClockPage';
 
 import { firebaseConfig } from './Firebase/firebase';
 import { initializeApp } from 'firebase/app';
+// import ShoppinglistPage from './pages/ShoppinglistPage';
 
 
 
@@ -46,6 +49,18 @@ const App = () => {
             <Route path="/git-ClanCollApp/ToDoPage" 
                 element= {<AuthRoute>
                             <ToDoPage/>
+                          </AuthRoute>} />
+            <Route path="/git-ClanCollApp/JournalPage" 
+                element= {<AuthRoute>
+                            <JournalPage/>
+                          </AuthRoute>} />
+            {/* <Route path="/git-ClanCollApp/ShoppinglistPage" 
+                element= {<AuthRoute>
+                            <ShoppinglistPage/>
+                          </AuthRoute>} /> */}
+            <Route path="/git-ClanCollApp/ClockPage" 
+                element= {<AuthRoute>
+                            <ClockPage/>
                           </AuthRoute>} />
         {/* </AuthRoute> */}
       </Routes>
