@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Topnavbar from '../components/Navigation/Topnavibar'
 import autumnwoman from '../assets/autumnwoman.jpg';
-import { doc, getDoc, updateDoc,collection, addDoc, query, where, getDocs  } from "firebase/firestore";
+import { doc, getDoc, updateDoc,collection, addDoc, query, where, getDocs, QueryDocumentSnapshot, DocumentData  } from "firebase/firestore";
 import { db, auth } from '../Firebase/firebase'
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import projectgroup from "../assets/projectgroup.jpg";
@@ -19,6 +19,7 @@ const ProfilePage = () => {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [userClans, setUserClans] = useState<Clan[]>([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [showPrompt, setShowPrompt] = useState(false);
 
@@ -45,14 +46,28 @@ const ProfilePage = () => {
         };
 
         const fetchUserClans = async () => {
+            setLoading(true);
+            console.log("Fetching user clans...");
             const user = auth.currentUser;
             if (user) {
-              const querySnapshot = await getDocs(
-                query(collection(db, "Clans"), where("members", "array-contains", user.uid)));
-              const clansData: Clan[] = querySnapshot.docs.map((doc: { id: any; data: () => any; }) => ({ id: doc.id,...doc.data() }));
-              setUserClans(clansData);
+                try {
+                    const querySnapshot = await getDocs(
+                        query(collection(db, "Clans"), where("members", "array-contains", { firstName, lastName, uid: user.uid }))
+                    );
+                    const clansData: Clan[] = querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => ({
+                        clanId: doc.id,
+                        clanName: doc.get('clanName'), 
+                        admin: doc.get('admin'), 
+                        members: doc.get('members') || [], 
+                    }));
+                    console.log("Fetched clans data:", clansData);
+                    setUserClans(clansData);
+                } catch (error) {
+                    console.error("Error fetching user clans:", error);
+                    setLoading(false);
+                }
             }
-          };
+        };
 
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
@@ -64,8 +79,10 @@ const ProfilePage = () => {
             }
         });
 
+        fetchUserProfile();
+
         return () => unsubscribe();
-    }, [navigate]);
+    }, [navigate, firstName, lastName]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -78,6 +95,7 @@ const ProfilePage = () => {
 
         const docRef = doc(db, "Users", user.uid);
         await updateDoc(docRef, {
+            nickName,
             firstName,
             lastName,
             phone,
@@ -90,10 +108,10 @@ const ProfilePage = () => {
     };
 
     const handleViewClan = (clanId: string) => {
-        const clan = userClans.find(clan => clan.id === clanId);
-    if (clan) {
-        navigate(`/clan/${clan.name}`);
-    }
+    //     const clan = userClans.find(clan => clan.id === clanId);
+    // if (clan) {
+        navigate(`/git-ClanCollApp/Dashboard/${clanId}`);
+    // }
       };
 
     const handleClosePrompt = () => {
@@ -113,7 +131,7 @@ const ProfilePage = () => {
                     <h1 className='text-3xl xs:text-xl font-semibold'>Profile</h1>
 
                     <form onSubmit={handleSubmit} className='w-1/2 m:w-[75vw] flex flex-col mb-4'>
-                    <div className='flex flex-col mb-2'>
+                        <div className='flex flex-col mb-2'>
                             <label htmlFor='nickName' className='text-lg mb-1'>Nick Name</label>
                             <input type='text' id='nickName' value={nickName} onChange={(e) => setNickName(e.target.value)} className='px-2 py-1 bg-transparent border-b border-tertiary outline-none focus:outline-none' />
                         </div>
@@ -141,8 +159,8 @@ const ProfilePage = () => {
                         className="border-none bg-background/60 dark:bg-default-100/50 max-w-[610px]"
                         shadow="sm"
                     >
-                        <CardBody className="bg-secondary">
-                            <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center bg-primary rounded-lg m-1 p-2">
+                        <CardBody className="  bg-secondary">
+                        <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center bg-primary rounded-lg m-1 p-2">
                                 <div className="relative col-span-6 md:col-span-4 hidden lg:block">
                                     <Image
                                         alt="Album cover"
@@ -159,13 +177,16 @@ const ProfilePage = () => {
                                         <div className="flex flex-col gap-0 border-1 m-2 p-2">
                                             <h1 className="text-medium font-medium m-2 border-2 p-2">Your Clans</h1>
                                             <ul className="text-small m-2 p-2">
-                                                {userClans.map((clan, index) => (
+                                            {userClans.map((clan, index) => {
+                                                console.log("Clans:", clan);
+                                                return (
                                                     <li key={index}>
-                                                        <button onClick={() => handleViewClan(clan.name)} className="text-blue-500 hover:underline focus:outline-none">
-                                                            {clan.name}
+                                                        <button onClick={() => handleViewClan(clan.clanId)} className=" bg-secondary text-primary border-2 border-tertiary rounded-lg hover:underline focus:outline-none m-1 p-1">
+                                                            {clan.clanName}
                                                         </button>
                                                     </li>
-                                                ))}
+                                                );
+                                            })}
                                             </ul>
                                         </div>
                                         <div className="flex flex-col gap-0 border-tertiary m-2 border-1 p-2">

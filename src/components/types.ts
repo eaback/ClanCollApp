@@ -8,11 +8,11 @@ export interface User {
   }
   
   export interface Clan {
-    id: string;
-    name: string;
-    members: string[    ]; 
-    admin: string; // User UID of the admin
     
+    admin: string; // User UID of the admin
+    clanId: string;
+    clanName: string;
+    members: string[ ]; 
   }
 
   export interface Member {

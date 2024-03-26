@@ -92,6 +92,8 @@ const CreateClanPrompt: React.FC<CreateClanProps> = ({ onClose }) => {
             email: userData.email || '',
             phone: userData.phone || ''
         };
+        console.log(newUser);
+        console.log(userData);
         setMembers([...members, newUser]);
         setSelectedNames([...selectedNames, memberName]);
     } else {
@@ -125,7 +127,7 @@ const CreateClanPrompt: React.FC<CreateClanProps> = ({ onClose }) => {
                     firstName: member.firstName,
                     lastName: member.lastName
                 })),
-                creator: auth.currentUser?.uid,
+                admin: auth.currentUser?.uid,
             });
     
             // Update the clan data to include the clan ID
