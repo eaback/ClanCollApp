@@ -6,6 +6,7 @@ import { db, auth } from '../Firebase/firebase'
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import projectgroup from "../assets/projectgroup.jpg";
 import { useNavigate } from "react-router-dom";
+import { useClanContext } from "../components/Context/ClanContext";
 import CreateClanPrompt from '../components/ui/Prompt'
 import {Clan} from '../components/types'
 
@@ -20,8 +21,11 @@ const ProfilePage = () => {
     const [email, setEmail] = useState("");
     const [userClans, setUserClans] = useState<Clan[]>([]);
     const [loading, setLoading] = useState(true);
+    const [clanName, setClanName] = useState("");
     const navigate = useNavigate();
+    const {setSelectedClan } = useClanContext();
     const [showPrompt, setShowPrompt] = useState(false);
+    // const [clanId, setClanId] = useState<string>("")
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -39,6 +43,7 @@ const ProfilePage = () => {
                     setLastName(userProfileData.lastName || '');
                     setPhone(userProfileData.phone || '');
                     setEmail(userProfileData.email || '');
+                    setClanName(userProfileData.clanName || "");
                 } else {
                     console.log("User profile data not found!");
                 }
@@ -107,11 +112,9 @@ const ProfilePage = () => {
         setShowPrompt(true);
     };
 
-    const handleViewClan = (clanId: string) => {
-    //     const clan = userClans.find(clan => clan.id === clanId);
-    // if (clan) {
+    const handleViewClan = (clanId: string, clanName: string) => {
+        setSelectedClan(clanId, clanName);
         navigate(`/git-ClanCollApp/Dashboard/${clanId}`);
-    // }
       };
 
     const handleClosePrompt = () => {
@@ -181,7 +184,7 @@ const ProfilePage = () => {
                                                 console.log("Clans:", clan);
                                                 return (
                                                     <li key={index}>
-                                                        <button onClick={() => handleViewClan(clan.clanId)} className=" bg-secondary text-primary border-2 border-tertiary rounded-lg hover:underline focus:outline-none m-1 p-1">
+                                                        <button onClick={() => handleViewClan(clan.clanId, clan.clanName)} className=" bg-secondary text-primary border-2 border-tertiary rounded-lg hover:underline focus:outline-none m-1 p-1">
                                                             {clan.clanName}
                                                         </button>
                                                     </li>

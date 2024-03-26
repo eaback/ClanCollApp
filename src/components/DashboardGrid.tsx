@@ -25,7 +25,7 @@ import {
 
 //Todo: check authentication for page
 
-export function DashboardGrid() {
+export function DashboardGrid({clanId, clanName }: {clanId: string, clanName: string}) {
   const navigate = useNavigate();
 
   const handleClick = (path: string) => {
@@ -34,7 +34,7 @@ export function DashboardGrid() {
 
   return (
     <div className="bg-cover bg-center min-h-screen" style={{backgroundImage: `url(${bjork})`}}>
-      <header className="text-4xl text-primary p-1 text-center bg-secondary">Clan</header>
+      <header className="text-4xl text-primary p-1 text-center bg-secondary">{clanName} Clan</header>
     <BentoGrid className="max-w-4xl mx-auto bg-primary">
       {items.map((item, i) => (
         <BentoGridItem

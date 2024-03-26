@@ -1,15 +1,21 @@
 import React, {useState} from "react";
 import { getAuth, signOut } from 'firebase/auth';
 import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
+import { useLocation } from "react-router-dom"; 
 
-export default function App() {
+interface TopnavbarProps {
+  clanId?: string;
+}
+
+export default function App({ clanId }: TopnavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const auth = getAuth();
+  const location = useLocation();
 
   const menuItems = [
     { label: "Home", url: "/git-ClanCollApp" },
     { label: "Profile", url: "/git-ClanCollApp/Profile" },
-    { label: "Dashboard", url: "/git-ClanCollApp/Dashboard" },
+    { label: "Dashboard", url: `/git-ClanCollApp/Dashboard/${clanId}` },
     // { label: "Log In", url: "/git-ClanCollApp/login" },
     // { label: "Sign Up", url: "/git-ClanCollApp/signup" },
   ];
@@ -36,31 +42,13 @@ export default function App() {
         <NavbarBrand>
            <p className="font-bold text-xxl text-inherit text-lg text-tertiary">ClanCollApp</p>
         </NavbarBrand>
-        <NavbarItem>
-          <Link className="text-tertiary font-bold" href="/git-ClanCollApp">
-            Home
+        {menuItems.map((item, index) => (
+          <NavbarItem key={`${item.label}-${index}`} isActive={location.pathname.startsWith(item.url)}> {/* Highlight active link based on current URL */}
+            <Link className="text-tertiary" href={item.url} aria-current={location.pathname.startsWith(item.url) ? "page" : undefined}>
+              {item.label}
           </Link>
         </NavbarItem>
-        <NavbarItem isActive>
-          <Link className="text-tertiary" href="/git-ClanCollApp/Profile" aria-current="page">
-            Profile
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link className="text-tertiary font-bold" href="/git-ClanCollApp/Dashboard">
-            Dashboard
-          </Link>
-        </NavbarItem>
-        <NavbarItem className=" lg:flex">
-          {/* <Link className="text-tertiary font-bold  rounded-lg bg-primary" href="/git-ClanCollApp/login">
-            Login
-          </Link> */}
-        </NavbarItem>
-        <NavbarItem>
-          {/* <Link className="border-primary font-bold text-tertiary rounded-lg" href="/git-ClanCollApp/signup">
-            Sign Up
-          </Link> */}
-        </NavbarItem>
+        ))}
       </NavbarContent>
 
       <NavbarContent justify="end">
@@ -72,7 +60,7 @@ export default function App() {
           </Button>
         </NavbarItem>
       </NavbarContent>
-                                              {/* "solid" | "bordered" | "light" | "flat" | "faded" | "shadow" | "ghost" | undefined' */}
+                                  
       <NavbarMenu className="bg-opacity">
       {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.label}-${index}`}>

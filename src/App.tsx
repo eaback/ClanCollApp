@@ -14,6 +14,7 @@ import ClockPage  from './pages/ClockPage';
 
 import { firebaseConfig } from './Firebase/firebase';
 import { initializeApp } from 'firebase/app';
+import {ClanProvider} from './components/Context/ClanContext'
 // import ShoppinglistPage from './pages/ShoppinglistPage';
 
 
@@ -25,6 +26,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+    <ClanProvider>
       <Routes>
 
         <Route path="/git-ClanCollApp/login" element= {<LoginPage />} />
@@ -38,7 +40,7 @@ const App = () => {
                 element= {<AuthRoute>
                             <ProfilePage/>
                           </AuthRoute>} />
-            <Route path="/git-ClanCollApp/Dashboard" 
+            <Route path="/git-ClanCollApp/Dashboard/:clanId" 
                 element= {<AuthRoute>
                             <Dashboard/>
                           </AuthRoute>} />
@@ -64,6 +66,7 @@ const App = () => {
                           </AuthRoute>} />
         {/* </AuthRoute> */}
       </Routes>
+    </ClanProvider>
     </BrowserRouter>
   )
 }
