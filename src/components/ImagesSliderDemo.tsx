@@ -22,10 +22,6 @@ export function ImagesSliderDemo() {
   const navigate = useNavigate();
   
   return (
-    
-   
-    //todo: adjust font
-    //todo: change text for home page
 
     <ImagesSlider className="h-[100vh]" images={images}>
       <motion.div
@@ -44,7 +40,7 @@ export function ImagesSliderDemo() {
       >
         {/* Homepage text needs to be adjusted */}
         <motion.p className="font-bold text-xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
-          The hero section slideshow <br /> nobody asked for 
+        Get your Clan together <br />  simplify you daily life
         </motion.p> 
       </motion.div>
     </ImagesSlider>

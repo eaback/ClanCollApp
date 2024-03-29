@@ -15,7 +15,7 @@ import ClockPage  from './pages/ClockPage';
 import { firebaseConfig } from './Firebase/firebase';
 import { initializeApp } from 'firebase/app';
 import {ClanProvider} from './components/Context/ClanContext'
-// import ShoppinglistPage from './pages/ShoppinglistPage';
+import ShoppinglistPage from './pages/ShoppinglistPage';
 
 
 
@@ -33,9 +33,8 @@ const App = () => {
         <Route path="/git-ClanCollApp/signup" element= {<SignUpPage />} />
         {/* <AuthRoute> */}
             <Route path="/git-ClanCollApp"
-                element= { <AuthRoute>
-                              <Home/>
-                          </AuthRoute>} />
+                element= <Home/>
+              ></Route>
             <Route path="/git-ClanCollApp/Profile" 
                 element= {<AuthRoute>
                             <ProfilePage/>
@@ -44,23 +43,23 @@ const App = () => {
                 element= {<AuthRoute>
                             <Dashboard/>
                           </AuthRoute>} />
-            <Route path="/git-ClanCollApp/ClanMembers" 
+            <Route path="/git-ClanCollApp/ClanMembers/:clanId" 
                 element= {<AuthRoute>
                             <ClanMembers/>
                           </AuthRoute>} />
-            <Route path="/git-ClanCollApp/ToDoPage" 
+            <Route path="/git-ClanCollApp/ToDoPage/:clanId" 
                 element= {<AuthRoute>
                             <ToDoPage/>
                           </AuthRoute>} />
-            <Route path="/git-ClanCollApp/JournalPage" 
+            <Route path="/git-ClanCollApp/JournalPage/:clanId" 
                 element= {<AuthRoute>
                             <JournalPage/>
                           </AuthRoute>} />
-            {/* <Route path="/git-ClanCollApp/ShoppinglistPage" 
+            <Route path="/git-ClanCollApp/ShoppinglistPage/:clanId" 
                 element= {<AuthRoute>
                             <ShoppinglistPage/>
-                          </AuthRoute>} /> */}
-            <Route path="/git-ClanCollApp/ClockPage" 
+                          </AuthRoute>} />
+            <Route path="/git-ClanCollApp/ClockPage/:clanId" 
                 element= {<AuthRoute>
                             <ClockPage/>
                           </AuthRoute>} />

@@ -29,7 +29,12 @@ export function DashboardGrid({clanId, clanName }: {clanId: string, clanName: st
   const navigate = useNavigate();
 
   const handleClick = (path: string) => {
-    navigate(path);
+    if (clanId) {
+      // Replace ":clanId" with the actual clanId value
+      navigate(path.replace(':clanId', clanId));
+    } else {
+      navigate(path);
+    }
   }
 
   return (
@@ -62,49 +67,49 @@ const items = [
     "Keep track of your Clans To-Do's, add, change or remove by clicking this screen.",
     header: <img src={todos} alt="To-Do" className="flex flex-1 w-[75] h-full min-h-[6rem] rounded-lg border-primary border-2"/>,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/ToDoPage"
+    path: "/git-ClanCollApp/ToDoPage/:clanId"
   },
   {
     title: "Notes",
     description: "Dive into the Clans notes, add, discuss, or change notes. Keep track of your ideas",
     header: <img src={journal} alt="Journal" className="flex flex-1 w-[75] h-full min-h-[6rem] rounded-lg border-primary border-2"/>,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/JournalPage"
+    path: "/git-ClanCollApp/JournalPage/:clanId"
   },
   {
     title: "Groceries",
     description: "Clan's Groceries List, a shared list where every member can manage items",
     header: <img src={groceries} alt="To-Do" className="flex flex-1 w-[75] h-full min-h-[6rem] rounded-lg border-primary border-2"/>,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/ShoppinglistPage"
+    path: "/git-ClanCollApp/ShoppinglistPage/:clanId"
   },
   {
     title: "The Clan Planner",
     description:"The Clan planner is displayed here, keep track of everyone's schedule, meetings and appointments.",
     header: <Skeleton />,
     icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/"
+    path: "/git-ClanCollApp//:clanId"
   },
   {
     title: "Members",
     description: "Manage Clan members here, add, remove or change who is part of your Clan",
     header: <Skeleton />,
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/ClanMembers"
+    path: "/git-ClanCollApp/ClanMembers/:clanId"
   },
   {
     title: "Calender",
     description: "Yearly Calender",
     header: <Calendar />,
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/"
+    path: "/git-ClanCollApp/ClockPage/:clanId"
   },
   {
     title: "Clan Clock",
     description: "just you clock keeping track of time, so you don't have to :D.",
     header: <DigitalClock />,
     icon: <IconBoxAlignRightFilled className="h-4 w-4 text-neutral-500" />,
-    path: "/git-ClanCollApp/CLockPage"
+    path: "/git-ClanCollApp/ClockPage/:clanId"
   },
 ];
 

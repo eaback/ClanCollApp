@@ -2,8 +2,15 @@ import React from "react";
 import JournalApp from "../components/JournalApp";
 import Topnavbar from "../components/Navigation/Topnavibar"
 import Journaling from "../assets/Journaling.jpg"
+import { useNavigate, useParams } from "react-router-dom";
 
 const JournalPage = () => {
+  const navigate = useNavigate();
+    const { clanId } = useParams();
+
+    const handleNavigateBack = () => {
+      navigate(`/git-ClanCollApp/Dashboard/${clanId}`); // Navigate back to the Clan Dashboard with the clanId
+    };
 
     return (
         <div>
@@ -12,7 +19,9 @@ const JournalPage = () => {
           {/* <header className="bg-primary text-tertiary py-4 px-6">
             <h1 className="text-2xl font-bold">To-Do Page</h1>
           </header> */}
-          <Topnavbar/>
+          <Topnavbar 
+          // clanId={clanId}
+          navigateBack={handleNavigateBack} />
           <main className="flex-1 overflow-y-auto px-6 py-4">
         <JournalApp/>
         

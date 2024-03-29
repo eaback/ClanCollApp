@@ -1,39 +1,116 @@
-// ToDoApp.tsx
-import React, { useState } from 'react';
-import { User } from './types'; 
 
-interface ToDo {
-  id: string;
-  text: string;
-  createdBy: User;
-}
+import React, { useEffect, useState } from 'react';
+import {ToDo } from './types'; 
+import {auth, db} from '../Firebase/firebase';
+import { doc, getDoc, updateDoc,collection, addDoc, query, where, getDocs, QueryDocumentSnapshot, DocumentData, deleteDoc  } from "firebase/firestore";
+import { useParams } from 'react-router-dom';
+import { useClanContext } from './Context/ClanContext';
 
-const ToDoApp: React.FC = () => {
+
+const ToDoApp: React.FC = () =>  {
+  const {clanId} = useParams<{clanId: string}> ();
   const [todos, setTodos] = useState<ToDo[]>([]);
   const [inputText, setInputText] = useState('');
+  const { user } = useClanContext();
 
-  const handleAddToDo = () => {
-    if (inputText.trim() === '') return;
-
-    const newToDo: ToDo = {
-      id: Math.random().toString(),
-      text: inputText,
-      createdBy: {
-        uid: 'exampleUID', // Provide the user's UID here
-        nickName: 'Example User',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'example@example.com',
-        phone: '1234567890',
-      },
+  useEffect(() => {
+    const fetchData = async () => {
+      if (clanId) {
+        try {
+          const todosSnapshot = await getDocs(collection(db, `Clans/${clanId}/ToDos`)); 
+          const todosData = todosSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({ 
+            id: doc.id,
+            ...doc.data(),
+          })) as ToDo[];
+          setTodos(todosData);
+        } catch (error) {
+          console.error('Error fetching todos:', error);
+        }
+      }
     };
+    fetchData();
+  }, [clanId]);
 
-    setTodos(prevTodos => [...prevTodos, newToDo]);
-    setInputText('');
+
+  const handleAddToDo = async () => {
+    if (inputText.trim() === '') return;
+  
+    const user = auth.currentUser;
+    if (!user) {
+      console.error('User not logged in.');
+      return;
+    }
+  
+    try {
+      const todoRef = collection(db, `Clans/${clanId}/ToDos`);
+      const newToDo: Omit<ToDo, 'id'> = { // Omit 'id' from ToDo
+        text: inputText,
+        createdBy: user ? user.uid : '',
+      };
+  
+      // Add the document and retrieve the auto-generated ID
+      const docRef = await addDoc(todoRef, newToDo);
+      const id = docRef.id;
+  
+      // Update the todo with the Firestore-generated ID
+      const todoWithId: ToDo = {
+        id,
+        ...newToDo,
+      };
+  
+      setTodos(prevTodos => [...prevTodos, todoWithId]);
+      setInputText('');
+    } catch (error) {
+      console.error('Error adding ToDo:', error);
+    }
+  };
+  // const handleAddToDo = async () => {
+  //   if (inputText.trim() === '') return;
+
+  //   const user = auth.currentUser;
+  //   if (!user) {
+  //     console.error('User not logged in.');
+  //     return;
+  //   }
+
+  //   const newToDo: ToDo = {
+  //     id: Math.random().toString(),
+  //     text: inputText,
+  //     createdBy: user ? user.uid : '',
+  //   };
+
+  //   try {
+  //     const todoRef = collection(db, `Clans/${clanId}/ToDos`);
+  //     await addDoc(todoRef, newToDo);
+  //     setTodos(prevTodos => [...prevTodos, newToDo]);
+  //     setInputText('');
+  //   } catch (error) {
+  //     console.error('Error adding ToDo:', error);
+  //   }
+  // };
+  
+  const handleDeleteToDo = async (id: string) => {
+    try {
+      const todoDocRef = doc(db, `Clans/${clanId}/ToDos`, id); 
+
+      const todoSnapshot = await getDoc(todoDocRef);
+      if (todoSnapshot.exists()) {
+      await deleteDoc(todoDocRef); 
+      setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+      console.log("Todo deleted successfully", id);
+    } else {
+      console.log("Document does not exist: ", id);
+    }
+  } catch (error) {
+      console.error('Error deleting ToDo:', error);
+    }
   };
 
-  const handleDeleteToDo = (id: string) => {
-    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+  const handleDeleteClick = (id: string) => {
+    console.log('Deleting todo with ID:', id);
+    console.log('Clan ID: ', clanId);
+    handleDeleteToDo(id);
+    console.log('Todo deletion requested',id);
   };
 
   return (
@@ -63,7 +140,9 @@ const ToDoApp: React.FC = () => {
               <span>{todo.text}</span>
               <button
                 className="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-                onClick={() => handleDeleteToDo(todo.id)}
+                onClick={() =>
+                // {() => handleDeleteToDo(todo.id)}
+                handleDeleteClick(todo.id)}
               >
                 Delete
               </button>

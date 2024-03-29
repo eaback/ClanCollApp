@@ -8,7 +8,7 @@ import projectgroup from "../assets/projectgroup.jpg";
 import { useNavigate } from "react-router-dom";
 import { useClanContext } from "../components/Context/ClanContext";
 import CreateClanPrompt from '../components/ui/Prompt'
-import {Clan} from '../components/types'
+import {Clan, User} from '../components/types'
 
 
 
@@ -25,6 +25,7 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     const {setSelectedClan } = useClanContext();
     const [showPrompt, setShowPrompt] = useState(false);
+    
     // const [clanId, setClanId] = useState<string>("")
 
     useEffect(() => {
@@ -35,15 +36,15 @@ const ProfilePage = () => {
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    const userProfileData = docSnap.data();
-                    console.log("User profile data: " + userProfileData)
+                    const userProfileData = docSnap.data() as User;
+                    // console.log("User profile data: " + userProfileData)
                     setNickName(userProfileData.nickName || '');
-                    console.log("Retrieved Nickname:", nickName);
+                    // console.log("Retrieved Nickname:", nickName);
                     setFirstName(userProfileData.firstName || '');
                     setLastName(userProfileData.lastName || '');
                     setPhone(userProfileData.phone || '');
                     setEmail(userProfileData.email || '');
-                    setClanName(userProfileData.clanName || "");
+                    // setClanName(userProfileData.clanName || "");
                 } else {
                     console.log("User profile data not found!");
                 }
@@ -52,7 +53,7 @@ const ProfilePage = () => {
 
         const fetchUserClans = async () => {
             setLoading(true);
-            console.log("Fetching user clans...");
+            // console.log("Fetching user clans...");
             const user = auth.currentUser;
             if (user) {
                 try {
@@ -65,7 +66,7 @@ const ProfilePage = () => {
                         admin: doc.get('admin'), 
                         members: doc.get('members') || [], 
                     }));
-                    console.log("Fetched clans data:", clansData);
+                    // console.log("Fetched clans data:", clansData);
                     setUserClans(clansData);
                 } catch (error) {
                     console.error("Error fetching user clans:", error);
@@ -80,7 +81,7 @@ const ProfilePage = () => {
                 fetchUserClans();
             } else {
                 // Redirect to login or handle non-authenticated state
-                navigate('/login');
+                navigate('/git-ClanCollApp/login');
             }
         });
 
@@ -121,9 +122,19 @@ const ProfilePage = () => {
         setShowPrompt(false);
     };
 
+    const handleSignOut = () => {
+        auth.signOut().then(() => {
+            // Sign-out successful.
+            navigate('/git-ClanCollApp/login');
+        }).catch((error) => {
+            // An error happened.
+            console.error("Error signing out:", error);
+        });
+    };
+
     return (
         <>
-            <Topnavbar />
+            {/* <Topnavbar /> */}
             <div className='relative w-full h-screen flex items-start'>
                 {showPrompt && <div className="fixed inset-0 bg-gray-900 opacity-50 z-50"></div>}
 
@@ -159,11 +170,11 @@ const ProfilePage = () => {
 
                     <Card
                         isBlurred
-                        className="border-none bg-background/60 dark:bg-default-100/50 max-w-[610px]"
+                        className="flex flex-col border-none bg-background  dark:bg-default-100/50 max-w-[610px]"
                         shadow="sm"
                     >
-                        <CardBody className="  bg-secondary">
-                        <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center bg-primary rounded-lg m-1 p-2">
+                        <CardBody className=" flex flex-col bg-secondary p-0 rounded-lg">
+                        <div className="grid grid-cols-6 md:grid-cols-12 sm:grid-cols-1 gap-6 md:gap-4 items-center justify-center bg-primary rounded-lg m-1 p-2">
                                 <div className="relative col-span-6 md:col-span-4 hidden lg:block">
                                     <Image
                                         alt="Album cover"
@@ -177,8 +188,8 @@ const ProfilePage = () => {
 
                                 <div className="flex flex-col col-span-6 md:col-span-8">
                                     <div className="flex justify-between items-start">
-                                        <div className="flex flex-col gap-0 border-1 m-2 p-2">
-                                            <h1 className="text-medium font-medium m-2 border-2 p-2">Your Clans</h1>
+                                        <div className="flex flex-col gap-0 border-2 border-tertiary rounded-lg m-2 p-2 ">
+                                            <h1 className="text-tertiary font-medium m-2 border-2 p-2 rounded-lg border-tertiary">Your Clans</h1>
                                             <ul className="text-small m-2 p-2">
                                             {userClans.map((clan, index) => {
                                                 console.log("Clans:", clan);
@@ -192,11 +203,11 @@ const ProfilePage = () => {
                                             })}
                                             </ul>
                                         </div>
-                                        <div className="flex flex-col gap-0 border-tertiary m-2 border-1 p-2">
-                                            <h1 className="text-medium font-medium m-2 border-2 p-2">
+                                        <div className="flex flex-col gap-0 border-tertiary border-2 rounded-lg m-2 p-2">
+                                            <h1 className="text-tertiary font-medium m-2 border-2 border-tertiary p-2 rounded-lg">
                                                 Add New Clan
                                             </h1>
-                                            <Button onClick={handleCreateClan} className="text-small m-2 p-2">
+                                            <Button onClick={handleCreateClan} className="text-small m-2 p-2 bg-secondary text-primary">
                                                 Create Clan
                                             </Button>
                                         </div>
@@ -208,6 +219,14 @@ const ProfilePage = () => {
                 </div>
             </div>
             {showPrompt && <CreateClanPrompt onClose={handleClosePrompt} />}
+            <div className="absolute top-4 right-4">
+                <Button
+                    className='ml-2 text-primary font-bold bg-secondary border-tertiary border-[2px] p-1  rounded-lg'
+                    onClick={handleSignOut}
+                >
+                    Sign Out
+                </Button>
+            </div>
         </>
     );
 }

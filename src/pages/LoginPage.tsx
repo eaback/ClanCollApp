@@ -69,7 +69,7 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
                 }
             }
 
-            navigate('/git-ClanCollApp/');
+            navigate('/git-ClanCollApp/Profile');
         } catch (error) {
             console.log(error);
             setError('Failed to sign in. Please check your email and password.');

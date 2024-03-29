@@ -9,7 +9,7 @@ export interface User {
   
   export interface Clan {
     
-    admin: string; // User UID of the admin
+    admin: string; 
     clanId: string;
     clanName: string;
     members: string[ ]; 
@@ -35,18 +35,24 @@ export interface Activity {
   id: string;
   title: string;
   description: string;
-  startTime: Date; // Use appropriate Date type
-  endTime: Date; // Use appropriate Date type
+  startTime: Date;
+  endTime: Date; 
 }
 
 export interface Reminder {
   id: string;
   title: string;
-  time: Date; // Use appropriate Date type
+  time: Date; 
 }
 
 export interface ClockTime {
   hours: number;
   minutes: number;
   seconds: number;
+}
+
+export interface ToDo {
+  id: string;
+  text: string;
+  createdBy: string;
 }
