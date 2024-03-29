@@ -56,3 +56,12 @@ export interface ToDo {
   text: string;
   createdBy: string;
 }
+
+export interface JournalEntry {
+  title: string;
+  id: string;
+  text: string;
+  image?: string | null;
+  createdBy: string;
+  createdAt: Date; 
+}

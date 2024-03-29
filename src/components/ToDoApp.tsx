@@ -43,7 +43,7 @@ const ToDoApp: React.FC = () =>  {
   
     try {
       const todoRef = collection(db, `Clans/${clanId}/ToDos`);
-      const newToDo: Omit<ToDo, 'id'> = { // Omit 'id' from ToDo
+      const newToDo: Omit<ToDo, 'id'> = { 
         text: inputText,
         createdBy: user ? user.uid : '',
       };
@@ -64,30 +64,6 @@ const ToDoApp: React.FC = () =>  {
       console.error('Error adding ToDo:', error);
     }
   };
-  // const handleAddToDo = async () => {
-  //   if (inputText.trim() === '') return;
-
-  //   const user = auth.currentUser;
-  //   if (!user) {
-  //     console.error('User not logged in.');
-  //     return;
-  //   }
-
-  //   const newToDo: ToDo = {
-  //     id: Math.random().toString(),
-  //     text: inputText,
-  //     createdBy: user ? user.uid : '',
-  //   };
-
-  //   try {
-  //     const todoRef = collection(db, `Clans/${clanId}/ToDos`);
-  //     await addDoc(todoRef, newToDo);
-  //     setTodos(prevTodos => [...prevTodos, newToDo]);
-  //     setInputText('');
-  //   } catch (error) {
-  //     console.error('Error adding ToDo:', error);
-  //   }
-  // };
   
   const handleDeleteToDo = async (id: string) => {
     try {
